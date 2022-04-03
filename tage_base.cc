@@ -41,6 +41,7 @@
 #include "base/logging.hh"
 #include "debug/Fetch.hh"
 #include "debug/Tage.hh"
+#include "debug/ECE752_BPred.hh"
 
 namespace gem5
 {
@@ -810,6 +811,22 @@ void
 TAGEBase::setInitialize(bool initializeVal)
 {
 	initialized = initializeVal;
+}
+
+void 
+TAGEBase::clearTableEntries()
+{
+	for (int i = 1; i <= nHistoryTables; i++) {
+		DPRINTF(ECE752_BPred, "Before: Ctr: %d, tag: %d, u: %d\n", gtable[i]->ctr, gtable[i]->tag, gtable[i]->u);
+	}
+	for (int i = 1; i <= nHistoryTables; i++) {
+	        gtable[i]->ctr = 0;
+        	gtable[i]->tag = 0;
+         	gtable[i]->u = 0;
+    	}
+	for (int i = 1; i <= nHistoryTables; i++) {
+                DPRINTF(ECE752_BPred, "After: ctr: %d, tag: %d, u: %d\n", gtable[i]->ctr, gtable[i]->tag, gtable[i]->u);
+        }
 }
 
 } // namespace branch_prediction

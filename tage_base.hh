@@ -513,6 +513,8 @@ class TAGEBase : public SimObject
   public:
     //Deepa: Adding public function to set value of protected var initialized
     void setInitialize(bool initializeVal);
+
+    void clearTableEntries();
 };
 
 } // namespace branch_prediction

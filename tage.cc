@@ -139,8 +139,14 @@ void
 TAGE::flush()
 {
     DPRINTF(ECE752_BPred, "Deepa: TAGEPred: Entering flush function\n");
-    tage->setInitialize(false);
-    tage->init();
+    tage->clearTableEntries();
+    //tage->setInitialize(false);
+    //tage->init();
+    //for (int i = 1; i <= nHistoryTables; i++) {
+    //     gtable[i].ctr = 0;
+//	 gtable[i].tag = 0;
+//	 gtable[i].u = 0;
+//    }
 }
 
 } // namespace branch_prediction
