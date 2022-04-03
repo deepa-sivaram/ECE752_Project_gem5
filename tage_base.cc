@@ -813,6 +813,7 @@ TAGEBase::setInitialize(bool initializeVal)
 	initialized = initializeVal;
 }
 
+//Deepa: Adding function to clear gtable entries
 void 
 TAGEBase::clearTableEntries()
 {
