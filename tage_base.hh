@@ -513,7 +513,7 @@ class TAGEBase : public SimObject
   public:
     //Deepa: Adding public function to set value of protected var initialized
     void setInitialize(bool initializeVal);
-
+    //Deepa: Added public function to clear protected gtable var
     void clearTableEntries();
 };
 
