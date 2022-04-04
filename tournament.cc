@@ -364,16 +364,14 @@ TournamentBP::flush()
 {
     DPRINTF(ECE752_BPred, "Deepa: TournamentPred: Entering flush function\n");
     
-    // Re-initialize local history table 
+    // Deepa: Re-initialize local history table 
     for (int i = 0; i < localHistoryTableSize; ++i)
         localHistoryTable[i] = 0;
 
-    // Clear global history - clear() func deletes all elements of a vector and resizes to 0
+    // Deepa: Clear global history - clear() func deletes all elements of a vector and resizes to 0
     globalHistory.clear();
 
     // Reset local, global and choice counters to initial value
-    // reset() defined in sat_counter.hh
-    // size() inbuilt func for vector types
     for (int i = 0; i < (int)localCtrs.size(); i++)
 	localCtrs[i].reset();
     for (int i = 0; i < (int)globalCtrs.size(); i++)
