@@ -832,13 +832,13 @@ TAGEBase::clearTableEntries()
 	for (int i = 0; i < btablePrediction.size(); i++) {
 		DPRINTF(ECE752_BPred, "Before btable[%d]: %d\n", i, btablePrediction[i]);
 	}
-
+	
 	for (int i = 0; i < btablePrediction.size(); i++) {
 		btablePrediction[i] = 0;
 	}
 	
 	for (int i = 0; i < btablePrediction.size(); i++) {
-                DPRINTF(ECE752_BPred, "After btable [%d]: %d\n", i, btablePrediction[i]);
+                DPRINTF(ECE752_BPred, "After btable[%d]: %d\n", i, btablePrediction[i]);
         }
 	
 }
