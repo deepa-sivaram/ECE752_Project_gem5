@@ -813,7 +813,7 @@ TAGEBase::setInitialize(bool initializeVal)
 	initialized = initializeVal;
 }
 
-//Deepa: Adding function to clear gtable entries
+//Deepa: Adding function to clear gtable and btable entries
 void 
 TAGEBase::clearTableEntries()
 {
@@ -828,6 +828,19 @@ TAGEBase::clearTableEntries()
 	for (int i = 1; i <= nHistoryTables; i++) {
                 DPRINTF(ECE752_BPred, "After: ctr: %d, tag: %d, u: %d\n", gtable[i]->ctr, gtable[i]->tag, gtable[i]->u);
         }
+
+	for (int i = 0; i < btablePrediction.size(); i++) {
+		DPRINTF(ECE752_BPred, "Before btable[%d]: %d\n", i, btablePrediction[i]);
+	}
+
+	for (int i = 0; i < btablePrediction.size(); i++) {
+		btablePrediction[i] = 0;
+	}
+	
+	for (int i = 0; i < btablePrediction.size(); i++) {
+                DPRINTF(ECE752_BPred, "After btable [%d]: %d\n", i, btablePrediction[i]);
+        }
+	
 }
 
 } // namespace branch_prediction
