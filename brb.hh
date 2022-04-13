@@ -10,6 +10,7 @@ namespace branch_prediction
 class BRB
 {
   private:
+    //Each BRB Entry
     struct BRBEntry
     {
         /** The entry's thread id. */
@@ -23,9 +24,25 @@ class BRB
      	std::vector<bool> retainedBtableHysteresis;
     };
   public:
+    //Constructor
+    DefaultBTB(unsigned numEntries);
+
+    //Updating/Storing btable during context switch
+    void update(Thread tid);
+
+    //Initialize BRB
+    void init();
+
+    //
+    void evict();
+
 
   private:
+    //The actual BRB
     std::vector<BRBEntry> brb;
+
+    //Number of entries in BRB
+    unsigned numEntries;
 
 };
 
