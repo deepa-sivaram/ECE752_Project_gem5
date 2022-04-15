@@ -21,11 +21,20 @@ BRB::update(Thread tid, std::vector<bool> btablePred, std::vector<bool> btableHy
     brb[brb_index].retainedBtableHysteresis = btableHyst;
 }
 
-void
+unsigned
 BRB::getPrediction()
 {
 }
 
+void
+BRB::getIndex()
+{
+}
+
+void 
+BRB::evict()
+{
+}
 } // namespace branch_prediction
 } // namespace gem5
                    
