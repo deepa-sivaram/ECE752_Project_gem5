@@ -22,10 +22,10 @@ BRB::update(Thread tid, std::vector<bool> btablePred, std::vector<bool> btableHy
 }
 
 bool
-BRB::getPrediction(unsigned brb_index, std::vector<struct> brb, Thread tid, Addr instPC)
+BRB::getPrediction(unsigned brb_index, std::vector<struct> brb, Thread tid, BranchInfo* bi)
 {
-	if(brb[brb_index].valid && (brb[brb_index].tid == tid))
-		return {brb[brb_index].retainedBtablePrediction, brb[brb_index].retainedBtableHysteresis};
+	if(brb[brb_index].valid && (brb[brb_index].tid == tid)) 
+		return {brb[brb_index].retainedBtablePrediction[bi->bimodalIndex], brb[brb_index].retainedBtableHysteresis[bi->bimodalIndex]};
 }
 
 void
