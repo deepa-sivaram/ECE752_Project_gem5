@@ -35,8 +35,10 @@ BRB::getIndex(unsigned brb_index)
 }
 
 void 
-BRB::evict()
+BRB::evict(std::vector<struct> brb)
 {
+	int i = rand[0, numEntries-1];
+	brb[i].valid = false;		
 }
 } // namespace branch_prediction
 } // namespace gem5
