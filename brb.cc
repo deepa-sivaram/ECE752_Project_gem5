@@ -28,9 +28,10 @@ BRB::getPrediction(unsigned brb_index, std::vector<struct> brb, Thread tid, Bran
 		return {brb[brb_index].retainedBtablePrediction[bi->bimodalIndex], brb[brb_index].retainedBtableHysteresis[bi->bimodalIndex]};
 }
 
-void
-BRB::getIndex()
+unsigned
+BRB::getIndex(unsigned brb_index)
 {
+	return brb_index++;
 }
 
 void 
