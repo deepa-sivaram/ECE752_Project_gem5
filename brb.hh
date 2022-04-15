@@ -25,16 +25,19 @@ class BRB
     };
   public:
     //Constructor
-    DefaultBTB(unsigned numEntries);
+    BRB(unsigned numEntries);
 
     //Updating/Storing btable during context switch
     void update(Thread tid);
 
-    //Initialize BRB
-    void init();
-
-    //
+    //Evict entries from BRB when full
     void evict();
+
+    //Return index of BRB
+    void getIndex();
+
+    //Return Prediction from BRB
+    void getPrediction();
 
 
   private:
@@ -43,6 +46,9 @@ class BRB
 
     //Number of entries in BRB
     unsigned numEntries;
+
+    //Index pointer that points to the tail of BRB
+    unsigned brb_index;
 
 };
 
