@@ -24,9 +24,12 @@ BRB::update(Thread tid, std::vector<bool> btablePred, std::vector<bool> btableHy
 bool
 BRB::getPrediction(Addr instPC, std::vector<struct> brb, Thread tid, BranchInfo* bi)
 {
-	unsigned current_indx = (instPC >> instShiftAmt) ^ (tid << (tagShiftAmt - instShiftAmt - log2NumThreads))) & idxMask;
+	//unsigned current_indx = (instPC >> instShiftAmt) ^ (tid << (tagShiftAmt - instShiftAmt - log2NumThreads))) & idxMask;
+	for (unsigned current_indx = 0; current_indx <= brb_index; current_indx++)
+	{
 	if(brb[current_indx].valid && (brb[current_indx].tid == tid)) 
 		return {brb[current_indx].retainedBtablePrediction[bi->bimodalIndex], brb[current_indx].retainedBtableHysteresis[bi->bimodalIndex]};
+	}
 }
 
 unsigned
@@ -35,11 +38,12 @@ BRB::getIndex(unsigned brb_index)
 	return brb_index++;
 }
 
-void 
+unsigned
 BRB::evict(std::vector<struct> brb)
 {
-	int i = rand[0, numEntries-1];
-	brb[i].valid = false;		
+	unsigned i = rand[0, numEntries-1];
+	brb[i].valid = false;
+	return i;
 }
 } // namespace branch_prediction
 } // namespace gem5
