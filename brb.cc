@@ -15,9 +15,9 @@ BRB::update(Thread tid, std::vector<bool> btablePred, std::vector<bool> btableHy
 {
     assert(brb_index < numEntries);
     if (brb_index >= numEntries) {
-	    insertIndex = evict();
+	    insert_index = evict();
     } else {
-	    insertIndex = brb_index;
+	    insert_index = brb_index;
     }
     brb[insert_index].tid = tid;
     brb[insert_index].valid = true;
