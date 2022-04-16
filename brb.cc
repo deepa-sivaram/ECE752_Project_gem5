@@ -20,9 +20,9 @@ BRB::update(Thread tid, std::vector<bool> btablePred, std::vector<bool> btableHy
 	    insertIndex = brb_index;
     }
     brb[insert_index].tid = tid;
-    brb[brb_index].valid = true;
-    brb[brb_index].retainedBtablePrediction = btablePred;
-    brb[brb_index].retainedBtableHysteresis = btableHyst;
+    brb[insert_index].valid = true;
+    brb[insert_index].retainedBtablePrediction = btablePred;
+    brb[insert_index].retainedBtableHysteresis = btableHyst;
 }
 
 bool
