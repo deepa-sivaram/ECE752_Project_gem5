@@ -14,8 +14,12 @@ void
 BRB::update(Thread tid, std::vector<bool> btablePred, std::vector<bool> btableHyst, unsigned brb_index) 
 {
     assert(brb_index < numEntries);
-
-    brb[brb_index].tid = tid;
+    if (brb_index >= numEntries) {
+	    insertIndex = evict();
+    } else {
+	    insertIndex = brb_index;
+    }
+    brb[insert_index].tid = tid;
     brb[brb_index].valid = true;
     brb[brb_index].retainedBtablePrediction = btablePred;
     brb[brb_index].retainedBtableHysteresis = btableHyst;
