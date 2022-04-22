@@ -1,11 +1,14 @@
+
 #include "cpu/pred/brb.hh"
-#include "debug/ECE&52_BPred.hh"
+#include "debug/ECE752_BPred.hh"
+#include "base/types.hh"
+#include "base/trace.hh"
 
 namespace gem5
 {
 namespace branch_prediction
 {
-BRB::BRB(unsigned _numEntries) : numEntries(_numEntries)
+BRB::BRB()
 {
 	brb.resize(numEntries);
 }
@@ -26,7 +29,7 @@ BRB::update(Thread tid, std::vector<bool> btablePred, std::vector<bool> btableHy
 }
 
 bool
-BRB::getPrediction(Addr instPC, std::vector<struct> brb, Thread tid, BranchInfo* bi)
+BRB::getPrediction(Addr instPC, Thread tid, BranchInfo* bi)
 {
 	//unsigned current_indx = (instPC >> instShiftAmt) ^ (tid << (tagShiftAmt - instShiftAmt - log2NumThreads))) & idxMask;
 	for (unsigned current_indx = 0; current_indx <= brb_index; current_indx++)
@@ -37,13 +40,13 @@ BRB::getPrediction(Addr instPC, std::vector<struct> brb, Thread tid, BranchInfo*
 }
 
 unsigned
-BRB::getIndex(unsigned brb_index)
+BRB::getIndex()
 {
 	return brb_index++;
 }
 
 unsigned
-BRB::evict(std::vector<struct> brb)
+BRB::evict()
 {
 	unsigned i = rand[0, numEntries-1];
 	brb[i].valid = false;
