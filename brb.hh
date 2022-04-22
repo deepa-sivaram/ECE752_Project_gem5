@@ -1,6 +1,11 @@
 #ifndef __CPU_PRED_BRB_HH__
 #define __CPU_PRED_BRB_HH__
 
+#include "base/types.hh"
+#include <vector>
+#include "base/statistics.hh"
+#include "cpu/pred/tage_base.hh"
+
 namespace gem5
 {
 
@@ -25,10 +30,10 @@ class BRB
     };
   public:
     //Constructor
-    BRB(unsigned numEntries);
+    BRB();
 
     //Updating/Storing btable during context switch
-    void update(Thread tid);
+    void update(Addr pc, Thread tid, BranchInfo *bi);
 
     //Evict entries from BRB when full
     void evict();
@@ -45,7 +50,7 @@ class BRB
     std::vector<BRBEntry> brb;
 
     //Number of entries in BRB
-    unsigned numEntries;
+    const unsigned numEntries = 10;
 
     //Index pointer that points to the tail of BRB
     unsigned brb_index;
