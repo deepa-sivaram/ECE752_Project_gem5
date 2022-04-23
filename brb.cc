@@ -3,6 +3,7 @@
 #include "debug/ECE752_BPred.hh"
 #include "base/types.hh"
 #include "base/trace.hh"
+#include <time.h>
 
 namespace gem5
 {
@@ -48,7 +49,8 @@ BRB::getIndex()
 unsigned
 BRB::evict()
 {
-	unsigned i = rand[0, numEntries-1];
+	srand(time(NULL));
+	unsigned i = rand() % (numEntries-1);
 	brb[i].valid = false;
 	return i;
 }
