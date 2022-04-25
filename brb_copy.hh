@@ -60,7 +60,7 @@ class BRB
     unsigned evict();
 
     //Return index of BRB
-    unsigned getIndex(ThreadID tid);
+    unsigned getIndex();
 
     //Return Prediction from BRB
     bool getPrediction(Addr pc, int biModalIndex, ThreadID tid);
