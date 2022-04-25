@@ -55,6 +55,7 @@
 #include "cpu/static_inst.hh"
 #include "params/TAGEBase.hh"
 #include "sim/sim_object.hh"
+#include "cpu/pred/brb.hh"
 
 namespace gem5
 {
@@ -247,6 +248,8 @@ class TAGEBase : public SimObject
      * prediction.
      */
     virtual bool getBimodePred(Addr pc, BranchInfo* bi) const;
+    //Deepa: bimodal pred from BRB
+    virtual bool getBimodePred(Addr pc, BranchInfo* bi, ThreadID tid) const;
 
     /**
      * Updates the bimodal predictor.
@@ -256,6 +259,8 @@ class TAGEBase : public SimObject
      * recorded at prediction time.
      */
     void baseUpdate(Addr pc, bool taken, BranchInfo* bi);
+    //Deepa: Update base pred in BRB
+    void baseUpdate(Addr pc, bool taken, BranchInfo* bi, ThreadID tid);
 
    /**
     * (Speculatively) updates the global branch history.
@@ -394,7 +399,7 @@ class TAGEBase : public SimObject
      * Handles the update of the TAGE entries
      */
     virtual void handleTAGEUpdate(
-        Addr branch_pc, bool taken, BranchInfo* bi);
+        Addr branch_pc, bool taken, BranchInfo* bi, ThreadID tid);
 
     /**
      * Algorithm for resetting a single U counter
@@ -513,8 +518,17 @@ class TAGEBase : public SimObject
   public:
     //Deepa: Adding public function to set value of protected var initialized
     void setInitialize(bool initializeVal);
-    //Deepa: Added public function to clear protected gtable var
+
+    //Deepa: Function to flush btable anf gtable
     void clearTableEntries();
+
+    //Deepa: Adding save state function
+    void saveState(ThreadID tid);
+
+    //Deepa: Actual BRB Object
+    BRB BRBObj;
+    BRB *BRBObjPtr = &BRBObj;
+
 };
 
 } // namespace branch_prediction

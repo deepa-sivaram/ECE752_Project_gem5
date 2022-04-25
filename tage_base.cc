@@ -296,6 +296,14 @@ TAGEBase::getBimodePred(Addr pc, BranchInfo* bi) const
     return btablePrediction[bi->bimodalIndex];
 }
 
+//Deepa: Bimodal Prediction from BRB : Modified code to return base pred from BRB
+bool
+TAGEBase::getBimodePred(Addr pc, BranchInfo* bi, ThreadID tid) const
+{
+    int biModalIndex = bi->bimodalIndex;
+    bool pred_value = BRBObjPtr->getPrediction(pc, biModalIndex, tid);
+    return pred_value;
+}
 
 // Update the bimodal predictor: a hysteresis bit is shared among N prediction
 // bits (N = 2 ^ logRatioBiModalHystEntries)
@@ -315,6 +323,13 @@ TAGEBase::baseUpdate(Addr pc, bool taken, BranchInfo* bi)
     btablePrediction[bi->bimodalIndex] = pred;
     btableHysteresis[bi->bimodalIndex >> logRatioBiModalHystEntries] = hyst;
     DPRINTF(Tage, "Updating branch %lx, pred:%d, hyst:%d\n", pc, pred, hyst);
+}
+
+//Deepa: Updating bimodal predictor in BRB
+void
+TAGEBase::baseUpdate(Addr pc, bool taken, BranchInfo* bi, ThreadID tid)
+{
+    BRBObjPtr->basePredUpdate(pc, taken, bi->bimodalIndex, tid, logRatioBiModalHystEntries);
 }
 
 // shifting the global history:  we manage the history in a big table in order
@@ -398,7 +413,7 @@ TAGEBase::tagePredict(ThreadID tid, Addr branch_pc,
                     gtable[bi->altBank][tableIndices[bi->altBank]].ctr >= 0;
                 extraAltCalc(bi);
             }else {
-                bi->altTaken = getBimodePred(pc, bi);
+                bi->altTaken = getBimodePred(pc, bi, tid);
             }
 
             bi->longestMatchPred =
@@ -419,7 +434,7 @@ TAGEBase::tagePredict(ThreadID tid, Addr branch_pc,
                                            : BIMODAL_ALT_MATCH;
             }
         } else {
-            bi->altTaken = getBimodePred(pc, bi);
+            bi->altTaken = getBimodePred(pc, bi, tid);
             bi->tagePred = bi->altTaken;
             bi->longestMatchPred = bi->altTaken;
             bi->provider = BIMODAL_ONLY;
@@ -549,11 +564,11 @@ TAGEBase::condBranchUpdate(ThreadID tid, Addr branch_pc, bool taken,
 
     handleAllocAndUReset(alloc, taken, bi, nrand);
 
-    handleTAGEUpdate(branch_pc, taken, bi);
+    handleTAGEUpdate(branch_pc, taken, bi, tid);
 }
 
 void
-TAGEBase::handleTAGEUpdate(Addr branch_pc, bool taken, BranchInfo* bi)
+TAGEBase::handleTAGEUpdate(Addr branch_pc, bool taken, BranchInfo* bi, ThreadID tid)
 {
     if (bi->hitBank > 0) {
         DPRINTF(Tage, "Updating tag table entry (%d,%d) for branch %lx\n",
@@ -572,6 +587,7 @@ TAGEBase::handleTAGEUpdate(Addr branch_pc, bool taken, BranchInfo* bi)
             }
             if (bi->altBank == 0) {
                 baseUpdate(branch_pc, taken, bi);
+		baseUpdate(branch_pc, taken, bi, tid);
             }
         }
 
@@ -582,6 +598,7 @@ TAGEBase::handleTAGEUpdate(Addr branch_pc, bool taken, BranchInfo* bi)
         }
     } else {
         baseUpdate(branch_pc, taken, bi);
+	baseUpdate(branch_pc, taken, bi, tid);
     }
 }
 
@@ -806,6 +823,14 @@ TAGEBase::getSizeInBits() const {
     return bits;
 }
 
+//Deepa: Adding save state function
+void 
+TAGEBase::saveState(ThreadID tid)
+{
+    DPRINTF(ECE752_BPred, "Deepa: TAGEBase saveState func: Calling BRB update for thread %d", tid);
+    BRBObjPtr->update(tid, btablePrediction, btableHysteresis);
+}
+
 //Deepa: Adding function to set value of protected var initialized 
 void 
 TAGEBase::setInitialize(bool initializeVal)
@@ -832,13 +857,13 @@ TAGEBase::clearTableEntries()
 	for (int i = 0; i < btablePrediction.size(); i++) {
 		DPRINTF(ECE752_BPred, "Before btable[%d]: %d\n", i, btablePrediction[i]);
 	}
-	
+
 	for (int i = 0; i < btablePrediction.size(); i++) {
 		btablePrediction[i] = 0;
 	}
 	
 	for (int i = 0; i < btablePrediction.size(); i++) {
-                DPRINTF(ECE752_BPred, "After btable[%d]: %d\n", i, btablePrediction[i]);
+                DPRINTF(ECE752_BPred, "After btable [%d]: %d\n", i, btablePrediction[i]);
         }
 	
 }
